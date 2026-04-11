@@ -167,14 +167,27 @@ def run_tool(tool_name, tool_input):
     else:
         return f"Unknown tool: {tool_name}"
 
+# Messages stored outside so agent remembers conversation history
+messages = [
+    {"role": "system", "content": """You are DevAgent, a helpful coding assistant. Use tools when needed.
+
+For local files: use list_files with '.' when user says 'my files' or 'list files'.
+For GitHub files: use get_file_content with repo_name and file_path.
+For GitHub repo listing: use get_repo_structure with repo_name.
+
+If user gives you a filename and asks to create it, just create it immediately. Do not ask for confirmation.
+If user gives NO filename, then ask once for the name only.
+If repo name is missing for GitHub actions, ask once for it only.
+Remember the last mentioned repo and reuse it automatically.
+Do not ask multiple questions. Just do the task.
+"""}
+]
+
 def agent(user_message):
-    messages = [
-        {"role": "system", "content": "You are DevAgent, a helpful coding assistant. Use tools when needed."},
-        {"role": "user", "content": user_message}
-    ]
+    messages.append({"role": "user", "content": user_message})
 
     response = client.chat.completions.create(
-        model="llama-3.3-70b-versatile",
+        model="openai/gpt-oss-120b",
         messages=messages,
         tools=tools
     )
@@ -194,18 +207,20 @@ def agent(user_message):
             })
 
         final_response = client.chat.completions.create(
-            model="llama-3.3-70b-versatile",
+            model="openai/gpt-oss-120b",
             messages=messages,
             tools=tools
         )
 
         final_message = final_response.choices[0].message
+        messages.append({"role": "assistant", "content": final_message.content})
 
         if final_message.content:
             return final_message.content
         else:
             return tool_result
 
+    messages.append({"role": "assistant", "content": message.content})
     return message.content
 
 if __name__ == "__main__":
