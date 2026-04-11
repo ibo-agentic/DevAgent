@@ -1,5 +1,6 @@
 import os
 import json
+import base64
 from groq import Groq
 from dotenv import load_dotenv
 from tools import read_file, list_files
@@ -167,7 +168,6 @@ def run_tool(tool_name, tool_input):
     else:
         return f"Unknown tool: {tool_name}"
 
-# Messages stored outside so agent remembers conversation history
 messages = [
     {"role": "system", "content": """You are DevAgent, a helpful coding assistant. Use tools when needed.
 
@@ -180,10 +180,67 @@ If user gives NO filename, then ask once for the name only.
 If repo name is missing for GitHub actions, ask once for it only.
 Remember the last mentioned repo and reuse it automatically.
 Do not ask multiple questions. Just do the task.
+
+When the user uploads an image, analyze it carefully and describe what you see.
+If it contains code, extract and explain it.
+If it contains a diagram or UI, describe it in detail.
+
+When the user uploads a PDF, read and analyze its contents thoroughly.
+Summarize, answer questions, or extract information as requested.
 """}
 ]
 
-def agent(user_message):
+def agent(user_message, image_path=None, file_path=None, file_type=None):
+
+    # Handle PDF upload
+    if file_path and file_type == "pdf":
+        try:
+            import pdfplumber
+            with pdfplumber.open(file_path) as pdf:
+                text = "\n".join(page.extract_text() or "" for page in pdf.pages)
+            user_message = f"{user_message or 'Summarize this PDF.'}\n\nPDF Content:\n{text}"
+        except ImportError:
+            return "pdfplumber is not installed. Run: uv add pdfplumber"
+        except Exception as e:
+            return f"Failed to read PDF: {e}"
+
+    # Handle image upload
+    actual_image = image_path or (file_path if file_type != "pdf" else None)
+
+    if actual_image:
+        ext = actual_image.lower().split(".")[-1]
+        mime_map = {
+            "jpg": "image/jpeg",
+            "jpeg": "image/jpeg",
+            "png": "image/png",
+            "gif": "image/gif",
+            "webp": "image/webp"
+        }
+        mime_type = mime_map.get(ext, "image/jpeg")
+
+        with open(actual_image, "rb") as f:
+            image_data = base64.b64encode(f.read()).decode("utf-8")
+
+        content = [
+            {
+                "type": "image_url",
+                "image_url": {"url": f"data:{mime_type};base64,{image_data}"}
+            },
+            {
+                "type": "text",
+                "text": user_message or "What do you see in this image?"
+            }
+        ]
+        messages.append({"role": "user", "content": content})
+        response = client.chat.completions.create(
+            model="meta-llama/llama-4-scout-17b-16e-instruct",
+            messages=messages,
+        )
+        reply = response.choices[0].message.content
+        messages.append({"role": "assistant", "content": reply})
+        return reply
+
+    # Normal text message (PDF text also flows through here after extraction)
     messages.append({"role": "user", "content": user_message})
 
     response = client.chat.completions.create(
@@ -222,6 +279,7 @@ def agent(user_message):
 
     messages.append({"role": "assistant", "content": message.content})
     return message.content
+
 
 if __name__ == "__main__":
     print("DevAgent is ready! Type 'exit' to quit.\n")
