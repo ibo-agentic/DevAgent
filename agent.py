@@ -196,6 +196,22 @@ def get_trimmed_messages():
         return messages
     return [messages[0]] + messages[-10:]
 
+def sanitize_messages(msgs):
+    """Ensure all message content is a string or None — Groq requires this."""
+    sanitized = []
+    for msg in msgs:
+        m = dict(msg)
+        if isinstance(m.get("content"), list):
+            # Extract text from content list if possible
+            texts = [
+                block.get("text", "")
+                for block in m["content"]
+                if isinstance(block, dict) and block.get("type") == "text"
+            ]
+            m["content"] = " ".join(texts) if texts else None
+        sanitized.append(m)
+    return sanitized
+
 def agent(user_message, image_path=None, file_path=None, file_type=None):
 
     # Handle PDF upload
@@ -240,7 +256,7 @@ def agent(user_message, image_path=None, file_path=None, file_type=None):
         messages.append({"role": "user", "content": content})
         response = client.chat.completions.create(
             model="meta-llama/llama-4-scout-17b-16e-instruct",
-            messages=get_trimmed_messages(),
+            messages=sanitize_messages(get_trimmed_messages()),
         )
         reply = response.choices[0].message.content
         messages.append({"role": "assistant", "content": reply})
@@ -251,18 +267,34 @@ def agent(user_message, image_path=None, file_path=None, file_type=None):
 
     response = client.chat.completions.create(
         model="openai/gpt-oss-120b",
-        messages=get_trimmed_messages(),
+        messages=sanitize_messages(get_trimmed_messages()),
         tools=tools
     )
 
     message = response.choices[0].message
 
     if message.tool_calls:
+        # ✅ FIX: append assistant message as a plain dict with string content
+        messages.append({
+            "role": "assistant",
+            "content": message.content or None,
+            "tool_calls": [
+                {
+                    "id": tc.id,
+                    "type": "function",
+                    "function": {
+                        "name": tc.function.name,
+                        "arguments": tc.function.arguments
+                    }
+                }
+                for tc in message.tool_calls
+            ]
+        })
+
         for tool_call in message.tool_calls:
             tool_name = tool_call.function.name
             tool_input = json.loads(tool_call.function.arguments)
             tool_result = run_tool(tool_name, tool_input)
-            messages.append(message)
             messages.append({
                 "role": "tool",
                 "tool_call_id": tool_call.id,
@@ -271,19 +303,19 @@ def agent(user_message, image_path=None, file_path=None, file_type=None):
 
         final_response = client.chat.completions.create(
             model="openai/gpt-oss-120b",
-            messages=get_trimmed_messages(),
+            messages=sanitize_messages(get_trimmed_messages()),
             tools=tools
         )
 
         final_message = final_response.choices[0].message
-        messages.append({"role": "assistant", "content": final_message.content})
+        messages.append({"role": "assistant", "content": final_message.content or ""})
 
         if final_message.content:
             return final_message.content
         else:
-            return tool_result
+            return str(tool_result)
 
-    messages.append({"role": "assistant", "content": message.content})
+    messages.append({"role": "assistant", "content": message.content or ""})
     return message.content
 
 
