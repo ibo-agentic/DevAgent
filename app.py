@@ -1,34 +1,25 @@
 import gradio as gr
-from agent import agent
+from llm_test import chat as agent_chat
 
 def chat(message, history):
     try:
-        reply = agent(message)
+        reply = agent_chat(message)
         if reply:
             return reply
         else:
-            return "Sorry I had trouble with that. Try asking differently!"
+            return "Sorry I had trouble with that!"
     except Exception as e:
         return f"Error: {str(e)}"
 
 demo = gr.ChatInterface(
     fn=chat,
     title="DevAgent 🤖",
-    description="Your autonomous AI coding agent — reads files, writes code, opens Pull Requests on GitHub automatically.",
+    description="Your autonomous AI coding agent!",
     examples=[
-        "What files are in my project?",
         "What is a Python decorator?",
-        "What files are in ibo-agentic/ai-startup-generator repo?",
+        "Explain how APIs work",
+        "Write a function that reverses a string",
     ],
-    chatbot=gr.Chatbot(
-        height=500,
-        placeholder="Ask DevAgent anything about code...",
-        show_label=False,
-    ),
-    textbox=gr.Textbox(
-        placeholder="Type your message here...",
-        container=False,
-    ),
 )
 
 demo.launch()
