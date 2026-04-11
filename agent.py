@@ -190,6 +190,12 @@ Summarize, answer questions, or extract information as requested.
 """}
 ]
 
+def get_trimmed_messages():
+    # Always keep system prompt + last 10 messages
+    if len(messages) <= 11:
+        return messages
+    return [messages[0]] + messages[-10:]
+
 def agent(user_message, image_path=None, file_path=None, file_type=None):
 
     # Handle PDF upload
@@ -234,18 +240,18 @@ def agent(user_message, image_path=None, file_path=None, file_type=None):
         messages.append({"role": "user", "content": content})
         response = client.chat.completions.create(
             model="meta-llama/llama-4-scout-17b-16e-instruct",
-            messages=messages,
+            messages=get_trimmed_messages(),
         )
         reply = response.choices[0].message.content
         messages.append({"role": "assistant", "content": reply})
         return reply
 
-    # Normal text message (PDF text also flows through here after extraction)
+    # Normal text message
     messages.append({"role": "user", "content": user_message})
 
     response = client.chat.completions.create(
         model="openai/gpt-oss-120b",
-        messages=messages,
+        messages=get_trimmed_messages(),
         tools=tools
     )
 
@@ -265,7 +271,7 @@ def agent(user_message, image_path=None, file_path=None, file_type=None):
 
         final_response = client.chat.completions.create(
             model="openai/gpt-oss-120b",
-            messages=messages,
+            messages=get_trimmed_messages(),
             tools=tools
         )
 
