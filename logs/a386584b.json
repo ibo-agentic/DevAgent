@@ -1,0 +1,10 @@
+[
+  {
+    "task_id": "a386584b",
+    "attempt_number": 1,
+    "code_run": "def fib(n):\n    if n == 0:\n        return 0\n    elif n == 1:\n        return 1\n    else:\n        return fib(n - 1) + fib(n - 2)\n\nresult = fib(10)\nprint(result)",
+    "stderr": "",
+    "success": true,
+    "timestamp": "2026-05-19T13:48:33.809037"
+  }
+]

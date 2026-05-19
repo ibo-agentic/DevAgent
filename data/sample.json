@@ -1,0 +1,10 @@
+[
+  {"name": "Widget A", "category": "electronics", "price": 29.99, "stock": 100},
+  {"name": "Gadget B", "category": "electronics", "price": 49.99, "stock": 50},
+  {"name": "Toy C",    "category": "toys",        "price": 14.99, "stock": 200},
+  {"name": "Book D",   "category": "books",       "price":  9.99, "stock": 150},
+  {"name": "Tool E",   "category": "tools",       "price": 34.99, "stock": 75},
+  {"name": "Toy F",    "category": "toys",        "price": 19.99, "stock": 120},
+  {"name": "Book G",   "category": "books",       "price": 12.99, "stock": 80},
+  {"name": "Gadget H", "category": "electronics", "price": 79.99, "stock": 30}
+]

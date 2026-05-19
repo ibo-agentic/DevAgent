@@ -1,0 +1,107 @@
+[
+  {
+    "id": "easy_01",
+    "tier": "easy",
+    "prompt": "Write a Python function fib(n) that returns the nth Fibonacci number (fib(0)=0, fib(1)=1). Save it to fib.py, then call fib(10) and print the result.",
+    "expected_outcome": "Output should be 55 (the 10th Fibonacci number)",
+    "success_keywords": ["55"]
+  },
+  {
+    "id": "easy_02",
+    "tier": "easy",
+    "prompt": "Write a Python function is_palindrome(s) that returns True if a string is a palindrome, False otherwise. Save it to palindrome.py, test it with 'racecar' and print the result.",
+    "expected_outcome": "Output should confirm racecar is a palindrome (True)",
+    "success_keywords": ["True"]
+  },
+  {
+    "id": "easy_03",
+    "tier": "easy",
+    "prompt": "Write a Python function reverse_list(lst) that returns a reversed copy of a list. Save it to reverse_list.py, call it with [1, 2, 3, 4, 5], and print the result.",
+    "expected_outcome": "Output should be [5, 4, 3, 2, 1]",
+    "success_keywords": ["5, 4, 3, 2, 1"]
+  },
+  {
+    "id": "easy_04",
+    "tier": "easy",
+    "prompt": "Write a Python function factorial(n) that returns n! using recursion. Save it to factorial.py, call factorial(7), and print the result.",
+    "expected_outcome": "Output should be 5040",
+    "success_keywords": ["5040"]
+  },
+  {
+    "id": "easy_05",
+    "tier": "easy",
+    "prompt": "Write a Python function count_vowels(s) that counts the number of vowels (a, e, i, o, u, case-insensitive) in a string. Save it to vowels.py, call count_vowels('Hello World'), and print the result.",
+    "expected_outcome": "Output should be 3",
+    "success_keywords": ["3"]
+  },
+  {
+    "id": "medium_01",
+    "tier": "medium",
+    "prompt": "Read the file data/sample.csv, compute the sum of the 'amount' column, and write the result as JSON to out.json with the key 'total_amount'. Then print the total.",
+    "expected_outcome": "Output should show 1332.0 and out.json should be created",
+    "success_keywords": ["1332"]
+  },
+  {
+    "id": "medium_02",
+    "tier": "medium",
+    "prompt": "Read data/sample.csv and find the row with the highest 'score'. Print the person's name and their score.",
+    "expected_outcome": "Output should show Diana with score 95",
+    "success_keywords": ["Diana", "95"]
+  },
+  {
+    "id": "medium_03",
+    "tier": "medium",
+    "prompt": "Read data/sample.json, extract all unique values of the 'category' field, sort them alphabetically, and write them one per line to categories.txt. Then print the sorted categories.",
+    "expected_outcome": "Output should list: books, electronics, tools, toys",
+    "success_keywords": ["books", "electronics", "tools", "toys"]
+  },
+  {
+    "id": "medium_04",
+    "tier": "medium",
+    "prompt": "Read data/sample.csv, compute the average of the 'score' column, and write the result as JSON to avg_score.json with the key 'average_score'. Print the average.",
+    "expected_outcome": "Output should show 85.625",
+    "success_keywords": ["85.625"]
+  },
+  {
+    "id": "medium_05",
+    "tier": "medium",
+    "prompt": "Read data/sample.json, count the number of items per 'category', and print a summary showing each category and its count.",
+    "expected_outcome": "Output should show electronics: 3, toys: 2, books: 2, tools: 1",
+    "success_keywords": ["electronics", "tools", "books", "toys"]
+  },
+  {
+    "id": "hard_01",
+    "tier": "hard",
+    "prompt": "Read the README file of the GitHub repository 'python/cpython' and summarize the first three sections you find.",
+    "expected_outcome": "Output should contain a summary mentioning Python and CPython",
+    "success_keywords": ["python", "cpython"]
+  },
+  {
+    "id": "hard_02",
+    "tier": "hard",
+    "prompt": "Get the file structure of the GitHub repository 'pallets/flask' and list all top-level files and directories.",
+    "expected_outcome": "Output should mention Flask-related files like README, setup.py or src",
+    "success_keywords": ["README", "flask"]
+  },
+  {
+    "id": "hard_03",
+    "tier": "hard",
+    "prompt": "Read the README of the GitHub repository 'psf/requests' and extract the main features or capabilities mentioned.",
+    "expected_outcome": "Output should mention HTTP and key features of the requests library",
+    "success_keywords": ["HTTP", "requests"]
+  },
+  {
+    "id": "hard_04",
+    "tier": "hard",
+    "prompt": "Get the file structure of 'django/django' on GitHub and list only the names of top-level directories (not files).",
+    "expected_outcome": "Output should include Django top-level directories like django, docs, tests",
+    "success_keywords": ["django", "docs", "tests"]
+  },
+  {
+    "id": "hard_05",
+    "tier": "hard",
+    "prompt": "Read the file 'CONTRIBUTING.md' from the GitHub repository 'pallets/flask' and summarize how to contribute to the project.",
+    "expected_outcome": "Output should describe the contribution process including pull requests or issues",
+    "success_keywords": ["pull request", "contribut"]
+  }
+]

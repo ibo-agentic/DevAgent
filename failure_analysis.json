@@ -1,0 +1,26 @@
+[
+  {
+    "task_id": "medium_01",
+    "tier": "medium",
+    "retries": 0,
+    "category": "confident_wrong_answer",
+    "reasoning": "The agent provided an incorrect sum of 690 instead of the expected 1332.0.",
+    "agent_output_snippet": "The sum of the 'amount' column is 690. The result has been written to `out.json` with the key 'total_amount'."
+  },
+  {
+    "task_id": "medium_02",
+    "tier": "medium",
+    "retries": 0,
+    "category": "confident_wrong_answer",
+    "reasoning": "The agent incorrectly identified the person with the highest score as Charlie instead of Diana, despite both having the same score.",
+    "agent_output_snippet": "The row with the highest 'score' is Charlie with a score of 95."
+  },
+  {
+    "task_id": "medium_04",
+    "tier": "medium",
+    "retries": 2,
+    "category": "overcorrection",
+    "reasoning": "The agent first failed due to a missing file and then encountered a different error related to a missing module, indicating it attempted to fix one issue but introduced another.",
+    "agent_output_snippet": "ERROR: Error code: 400 - {'error': {'message': \"Invalid parameter: messages with role 'tool' must be a response to a preceeding message with 'tool_calls'.\", 'type': 'invalid_request_error', 'param': 'messages.[1].role', 'code': None}}"
+  }
+]

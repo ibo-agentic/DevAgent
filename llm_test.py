@@ -24,7 +24,7 @@ def chat(user_message):
     
     #send the entire history to LLM
     response = client.chat.completions.create(
-        model="openai/gpt-oss-120b",
+        model="llama-3.3-70b-versatile",
         messages = conversation_history
     )
     

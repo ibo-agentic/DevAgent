@@ -1,0 +1,10 @@
+[
+  {
+    "task_id": "80544333",
+    "attempt_number": 1,
+    "code_run": "import json\nfrom collections import Counter\n\n# Load data\nwith open('data/sample.json') as f:\n    data = json.load(f)\n\n# Count items per category\ncategory_counts = Counter(item['category'] for item in data)\n\n# Print the summary\nfor category, count in category_counts.items():\n    print(f'{category}: {count}')\n",
+    "stderr": "",
+    "success": true,
+    "timestamp": "2026-05-19T13:50:36.870711"
+  }
+]

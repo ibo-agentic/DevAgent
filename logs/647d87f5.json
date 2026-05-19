@@ -1,0 +1,18 @@
+[
+  {
+    "task_id": "647d87f5",
+    "attempt_number": 1,
+    "code_run": "import pandas as pd\n\n# Load the CSV data\nfile_path = 'data/sample.csv'\ndata = pd.read_csv(file_path)\n\n# Find the row with the highest score\nhighest_score_row = data.loc[data['score'].idxmax()]\n\n# Get the name and score\nname = highest_score_row['name']\nscore = highest_score_row['score']\n\nprint(f'The person with the highest score is {name} with a score of {score}')\n",
+    "stderr": "Traceback (most recent call last):\n  File \"C:\\projects\\DevAgent\\data\\find_highest_score.py\", line 1, in <module>\n    import pandas as pd\nModuleNotFoundError: No module named 'pandas'\n",
+    "success": false,
+    "timestamp": "2026-05-19T13:49:52.308554"
+  },
+  {
+    "task_id": "647d87f5",
+    "attempt_number": 2,
+    "code_run": "import csv\n\n# Load the CSV data\nfile_path = 'data/sample.csv'\n\nwith open(file_path, mode='r') as file:\n    reader = csv.DictReader(file)\n    highest_score_row = max(reader, key=lambda row: int(row['score']))\n\n# Get the name and score\nname = highest_score_row['name']\nscore = highest_score_row['score']\n\nprint(f'The person with the highest score is {name} with a score of {score}')\n",
+    "stderr": "",
+    "success": true,
+    "timestamp": "2026-05-19T13:49:55.556368"
+  }
+]

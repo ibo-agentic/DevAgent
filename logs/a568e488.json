@@ -1,0 +1,10 @@
+[
+  {
+    "task_id": "a568e488",
+    "attempt_number": 1,
+    "code_run": "name,score,amount\nAlice,90,100\nBob,85,200\nCharlie,95,150\nDavid,78,80\nEva,90,60\n",
+    "stderr": "Traceback (most recent call last):\n  File \"C:\\projects\\DevAgent\\data\\sample.csv\", line 1, in <module>\n    name,score,amount\n    ^^^^\nNameError: name 'name' is not defined\n",
+    "success": false,
+    "timestamp": "2026-05-19T13:50:16.424129"
+  }
+]

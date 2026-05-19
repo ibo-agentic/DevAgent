@@ -1,0 +1,18 @@
+[
+  {
+    "task_id": "650c1f27",
+    "attempt_number": 1,
+    "code_run": "name,amount,score,category\nAlice,150.50,85,A\nBob,200.00,92,B\nCharlie,75.25,78,A\nDiana,320.00,95,B\nEve,110.75,88,C\nFrank,45.00,72,A\nGrace,250.50,91,B\nHenry,180.00,84,C\n",
+    "stderr": "Traceback (most recent call last):\n  File \"C:\\projects\\DevAgent\\data\\sample.csv\", line 1, in <module>\n    name,amount,score,category\n    ^^^^\nNameError: name 'name' is not defined\n",
+    "success": false,
+    "timestamp": "2026-05-19T13:49:33.378073"
+  },
+  {
+    "task_id": "650c1f27",
+    "attempt_number": 2,
+    "code_run": "import pandas as pd\n\n# Load the CSV file\ndf = pd.read_csv('data/sample.csv')\n\n# Calculate the sum of the 'amount' column\ntotal_amount = df['amount'].sum()\n\n# Print the total amount\nprint(total_amount)",
+    "stderr": "Traceback (most recent call last):\n  File \"C:\\projects\\DevAgent\\data\\sample.csv\", line 1, in <module>\n    import pandas as pd\nModuleNotFoundError: No module named 'pandas'\n",
+    "success": false,
+    "timestamp": "2026-05-19T13:49:37.339012"
+  }
+]
